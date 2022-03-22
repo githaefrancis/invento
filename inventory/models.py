@@ -1,4 +1,3 @@
-from tkinter import CASCADE
 from django.db import models
 
 # Create your models here.
@@ -45,8 +44,8 @@ class Allocation(models.Model):
   date_returned=models.DateTimeField(default=None)
   notes=models.CharField(max_length=500,default=None)
 
-class supply_consumption(models.Model):
+class SupplyConsumption(models.Model):
   supply=models.OneToOneField(Equipment,related_name='supply',on_delete=models.CASCADE)
   consumer=models.ForeignKey(Equipment,related_name='consumer',on_delete=models.CASCADE)
   installation_date=models.DateTimeField(auto_now_add=True)
-  notes=models.CharField(default=None)
+  notes=models.CharField(max_length=500,default=None)
