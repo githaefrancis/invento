@@ -42,6 +42,10 @@ class Department(models.Model):
   def save_department(self):
     self.save()
 
+  @classmethod
+  def get_all_departments(cls):
+    return Department.objects.all()
+
   def __str__(self):
     return self.department_name
 
