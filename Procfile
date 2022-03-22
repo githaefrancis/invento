@@ -1,0 +1,1 @@
+web: gunicorn invento.wsgi --log-file -
