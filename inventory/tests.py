@@ -1,7 +1,6 @@
-from curses import delay_output
-from wsgiref.simple_server import demo_app
+
 from django.test import TestCase
-from .models import Allocation, Category, Department, Employee, SupplyConsumption
+from .models import Allocation, Category, Department, Employee, SupplyConsumption,Equipment
 # Create your tests here.
 class EmployeeTest(TestCase):
   '''
@@ -29,7 +28,7 @@ class EmployeeTest(TestCase):
   
 
   def test_update_employee(self):
-
+    self.new_department.save_department()
     self.new_employee.save_employee()
     self.target_employee=Employee.objects.first()
     self.updated_employee=self.target_employee.update_employee(employee_lname='githae')
@@ -61,7 +60,7 @@ class CategoryTest(TestCase):
     self.new_category.save_category()
     self.assertTrue(len(Category.objects.all())>0)
 
-class Equipment(TestCase):
+class EquipmentTest(TestCase):
   def setUp(self):
     self.new_category=Category(category_name='Laptop',category_description='personal computers')
     self.new_equipment=Equipment(equipment_name='Hp Laptop',equipment_serial_number='67888FSD',equipment_code=123,equipment_model='Probook 14',category=self.new_category)
@@ -73,11 +72,9 @@ class Equipment(TestCase):
     self.assertTrue(len(Equipment.objects.all())>0) 
 
 class AllocationTest(TestCase):
-  def setUp(self):
-    self.new_category=Category(category_name='Laptop',category_description='personal computers')
-    self.new_equipment=Equipment(equipment_name='Hp Laptop',equipment_serial_number='67888FSD',equipment_code=123,equipment_model='Probook 14',category=self.new_category)
+  
 
-  def test_instance(self):
+  def setUp(self):
     self.new_category=Category(category_name='Laptop',category_description='personal computers')
     self.new_equipment=Equipment(equipment_name='Hp Laptop',equipment_serial_number='67888FSD',equipment_code=123,equipment_model='Probook 14',category=self.new_category)
     self.new_department=Department(department_name='IT',department_description='Tech department')
@@ -95,16 +92,13 @@ class AllocationTest(TestCase):
 
 class SupplyConsumptionTest(TestCase):
   def setUp(self):
-    self.new_category.save_category()
-    self.new_equipment.save_equipment()
-
-  def test_save_supply_consumption(self):
-
     self.new_category=Category(category_name='Laptop',category_description='personal computers')
     self.accessory_category=Category(category_name='accessory',category_description='computers accessory')
       
     self.new_equipment=Equipment(equipment_name='Hp Laptop',equipment_serial_number='67888FSD',equipment_code=123,equipment_model='Probook 14',category=self.new_category)
     self.new_accessory=Equipment(equipment_name='battery',equipment_serial_number='67888F6666SD',equipment_code=123332,equipment_model='hp',category=self.accessory_category)
+
+  def test_save_supply_consumption(self):
       
     self.new_supply_consumption=SupplyConsumption(supply=self.new_accessory,consumer=self.new_equipment)
     self.new_category.save_category()
