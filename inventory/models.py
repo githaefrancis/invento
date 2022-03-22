@@ -1,5 +1,5 @@
 from django.db import models
-
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class Category(models.Model):
@@ -22,6 +22,7 @@ class Equipment(models.Model):
   available=models.BooleanField(default=True)
   notes=models.CharField(max_length=500,default=None)
   damaged=models.BooleanField(default=False)
+  equipment_image=CloudinaryField('image',default=None)
 
 class Department(models.Model):
   department_name=models.CharField(max_length=100)
@@ -43,6 +44,8 @@ class Allocation(models.Model):
   is_returned=models.BooleanField(default=False)
   date_returned=models.DateTimeField(default=None)
   notes=models.CharField(max_length=500,default=None)
+
+
 
 class SupplyConsumption(models.Model):
   supply=models.OneToOneField(Equipment,related_name='supply',on_delete=models.CASCADE)

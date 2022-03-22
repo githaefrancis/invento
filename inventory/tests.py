@@ -98,23 +98,21 @@ class SupplyConsumptionTest(TestCase):
     self.new_category.save_category()
     self.new_equipment.save_equipment()
 
-  def test_save_supply_consumption(TestCase):
-    def setUp(self):
-      self.new_category=Category(category_name='Laptop',category_description='personal computers')
-      self.accessory_category=Category(category_name='accessory',category_description='computers accessory')
-      
-      self.new_equipment=Equipment(equipment_name='Hp Laptop',equipment_serial_number='67888FSD',equipment_code=123,equipment_model='Probook 14',category=self.new_category)
-      self.new_accessory=Equipment(equipment_name='battery',equipment_serial_number='67888F6666SD',equipment_code=123332,equipment_model='hp',category=self.accessory_category)
-      
-      self.new_supply_consumption=SupplyConsumption(supply=self.new_accessory,consumer=self.new_equipment)
+  def test_save_supply_consumption(self):
 
-    def test_save_suppy_consumption(self):
-      self.new_category.save_category()
-      self.accessory_category.save_category()
-      self.new_equipment.save_equipment()
-      self.new_accessory.save_equipment()
-      self.new_supply_consumption.save_supply_consumption()
+    self.new_category=Category(category_name='Laptop',category_description='personal computers')
+    self.accessory_category=Category(category_name='accessory',category_description='computers accessory')
+      
+    self.new_equipment=Equipment(equipment_name='Hp Laptop',equipment_serial_number='67888FSD',equipment_code=123,equipment_model='Probook 14',category=self.new_category)
+    self.new_accessory=Equipment(equipment_name='battery',equipment_serial_number='67888F6666SD',equipment_code=123332,equipment_model='hp',category=self.accessory_category)
+      
+    self.new_supply_consumption=SupplyConsumption(supply=self.new_accessory,consumer=self.new_equipment)
+    self.new_category.save_category()
+    self.accessory_category.save_category()
+    self.new_equipment.save_equipment()
+    self.new_accessory.save_equipment()
+    self.new_supply_consumption.save_supply_consumption()
 
-      self.assertTrue(len(SupplyConsumption.objects.all())>0)
+    self.assertTrue(len(SupplyConsumption.objects.all())>0)
 
 
