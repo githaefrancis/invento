@@ -4,9 +4,9 @@ from . import views
 urlpatterns=[
   re_path('^employees/',views.EmployeeList.as_view()),
   re_path('^departments/$',views.DepartmentList.as_view()),
-  # re_path('^equipment/',views.equipment,name='equipment'),
-  # re_path('^category/',views.category,name='category'),
-  # re_path('^allocation/',views.allocation,name='allocation'),
-  # re_path('^consumption/',views.consumption,name='consumption'),
+  re_path('^equipment/',views.EquipmentList.as_view()),
+  re_path('^category/',views.CategoryList.as_view()),
+  re_path('^allocation/',views.AllocationList.as_view()),
+  re_path('^consumption/',views.ConsumptionList.as_view()),
   
   ]
