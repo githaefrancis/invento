@@ -73,6 +73,10 @@ class Employee(models.Model):
     self.save()
     return self
 
+  @classmethod
+  def get_all_employees(cls):
+    return cls.objects.all()
+
   def __str__(self):
     return f"{self.employee_fname}  {self.employee_lname}"
 

@@ -5,3 +5,9 @@ class DepartmentSerializer(serializers.ModelSerializer):
   class Meta:
     model=Department
     fields=('department_name','department_description')
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Employee
+    fields=('employee_fname','employee_lname')
