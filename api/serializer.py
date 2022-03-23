@@ -48,8 +48,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
   employee=serializers.PrimaryKeyRelatedField(many=True,read_only=True)
   class Meta:
     model=Employee
-    # fields=('employee_fname','employee_lname','department','employee')
-    fields='__all__'
+    fields=('employee_fname','employee_lname','department','employee')
+
   # def to_representation(self, instance):
   #   response=super().to_representation(instance)
   #   response['department']=DepartmentSerializer(instance.employees).data
