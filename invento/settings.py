@@ -89,8 +89,11 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "localhost",
-    "herokuapp.com"
+    "https://localhost",
+    "http://localhost",
+    "https://herokuapp.com",
+    "http://herokuapp.com"
+
 ]
 
 # Database
