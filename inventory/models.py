@@ -45,6 +45,10 @@ class Department(models.Model):
   @classmethod
   def get_all_departments(cls):
     return Department.objects.all()
+  
+  @classmethod
+  def get_department_by_id(cls,id):
+    return cls.objects.filter(id=id).first()
 
   def __str__(self):
     return self.department_name

@@ -18,10 +18,22 @@ class DepartmentList(APIView):
     if serializers.is_valid():
       serializers.save()
 
-    return Response(serializers.data, status=status.HTTP_201_CREATED)
+      return Response(serializers.data, status=status.HTTP_201_CREATED)
 
 class EmployeeList(APIView):
   def get(self,request,format=None):
     all_employees=Employee.get_all_employees()
     serializers=EmployeeSerializer(all_employees,many=True)
     return Response(serializers.data)
+
+  def post(self,request,format=None):
+    serializers=DepartmentSerializer(data=request.data)
+    # department_id=request.POST.get('department')
+
+    current_department=Department.get_department_by_id(3)
+    if serializers.is_valid():
+      serializers.save(department=current_department)
+
+      return Response(serializers.data,status=status.HTTP_201_CREATED)
+
+
