@@ -92,7 +92,9 @@ CSRF_TRUSTED_ORIGINS = [
     "https://localhost",
     "http://localhost",
     "https://herokuapp.com",
-    "http://herokuapp.com"
+    "http://herokuapp.com",
+    "http://127.0.0.1",
+    "https://127.0.0.1"
 
 ]
 
