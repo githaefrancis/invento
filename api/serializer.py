@@ -41,9 +41,11 @@ class AllocationSerializer(serializers.ModelSerializer):
   employee_lname=serializers.CharField(source='employee_allocated.employee_lname',read_only=True)
   equipment_name=serializers.CharField(source='equipment_allocated.equipment_name',read_only=True)
   equipment_serial_number=serializers.CharField(source='equipment_allocated.equipment_serial_number',read_only=True)
+  equipment_code=serializers.CharField(source='equipment_allocated.equipment_code',read_only=True)
+  
   class Meta:
     model=Allocation
-    fields=('employee_allocated','equipment_allocated','equipment_name','employee_fname','employee_lname','equipment_serial_number')
+    fields=('id','employee_allocated','equipment_allocated','equipment_name','employee_fname','employee_lname','equipment_serial_number','is_returned','equipment_code','allocation_date')
     depth=1
 class SupplyConsumptionSerializer(serializers.ModelSerializer):
   supply=serializers.PrimaryKeyRelatedField(queryset=Equipment.objects.all(),many=False)

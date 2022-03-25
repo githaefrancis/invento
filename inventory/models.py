@@ -42,7 +42,7 @@ class Equipment(models.Model):
   def release_equipment(self):
     self.available=True
     self.save()
-    return self()
+    return self
 class Department(models.Model):
   department_name=models.CharField(max_length=100)
   department_description=models.CharField(max_length=100)

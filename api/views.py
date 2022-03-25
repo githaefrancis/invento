@@ -1,4 +1,6 @@
 
+from functools import partial
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -98,3 +100,26 @@ class AllocationList(APIView):
       return Response(serializers.data,status=status.HTTP_201_CREATED)
   
 
+class AllocationDetails(APIView):
+
+  def get_allocation(self,pk):
+    try:
+      return Allocation.objects.get(pk=pk)
+    except Allocation.DoesNotExist:
+      return Http404
+      
+  def put(self,request,pk,format=None):
+    allocation=self.get_allocation(pk)
+    serializers=AllocationSerializer(allocation,request.data,partial=True) 
+    equipment_id=allocation.equipment_allocated.id
+    target_equipment=Equipment.objects.filter(id=equipment_id).first()
+    print(target_equipment)
+    if serializers.is_valid():
+      target_equipment.release_equipment()
+
+      serializers.save()
+
+      return Response(serializers.data)
+    
+    else:
+      return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
