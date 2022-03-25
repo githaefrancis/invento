@@ -34,6 +34,15 @@ class Equipment(models.Model):
   def __str__(self):
     return self.equipment_name
 
+  def assign_equipment(self):
+    self.available=False
+    self.save()
+    return self
+
+  def release_equipment(self):
+    self.available=True
+    self.save()
+    return self()
 class Department(models.Model):
   department_name=models.CharField(max_length=100)
   department_description=models.CharField(max_length=100)

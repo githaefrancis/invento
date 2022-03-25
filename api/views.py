@@ -71,6 +71,13 @@ class EquipmentList(APIView):
       return Response(serializers.data,status=status.HTTP_201_CREATED)
 
 
+class EquipmentAvailableList(APIView):
+  def get(self,request, format=None):
+    all_equipment=Equipment.objects.filter(available=True).all()
+    serializers=EquipmentSerializer(all_equipment,many=True)
+    return Response(serializers.data)
+
+
 class AllocationList(APIView):
   def get(self,request, format=None):
     all_allocation=Allocation.objects.all()
@@ -78,15 +85,15 @@ class AllocationList(APIView):
     return Response(serializers.data)
 
   def post(self,request,format=None):
-    serializers=EquipmentSerializer(data=request.data)
-    equipment_id=request.data.get('allocated_equipment')
+    serializers=AllocationSerializer(data=request.data)
+    equipment_id=request.data.get('equipment_allocated')
     target_equipment=Equipment.objects.filter(id=equipment_id).first()
-    employee_id=request.data.get('allocated_employee')
+    employee_id=request.data.get('employee_allocated')
     target_employee=Employee.objects.filter(id=employee_id).first()   
-    
+    target_equipment.assign_equipment()
   
     if serializers.is_valid():
-      serializers.save(equipment=target_equipment,employee=target_employee)
+      serializers.save(equipment_allocated=target_equipment,employee_allocated=target_employee)
 
       return Response(serializers.data,status=status.HTTP_201_CREATED)
   
