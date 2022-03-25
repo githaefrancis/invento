@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -27,16 +28,17 @@ class EmployeeList(APIView):
     serializers=EmployeeSerializer(all_employees,many=True)
     return Response(serializers.data)
 
-  def post(self,request,format=json):
-    serializers=DepartmentSerializer(data=request.data)
-    # department_id=request.POST.get('department')
+  def post(self,request,format=None):
+    serializers=EmployeeSerializer(data=request.data)
+    department_id=request.data.get('department')
 
-    # current_department=Department.get_department_by_id(3)
+    target_department=Department.objects.get(pk=department_id)
+    print(target_department)
     if serializers.is_valid():
-      serializers.save()
+      serializers.save(department=target_department)
 
       return Response(serializers.data,status=status.HTTP_201_CREATED)
-
+    return serializers
 
 class CategoryList(APIView):
   def get(self,request,format=None):
@@ -57,9 +59,35 @@ class EquipmentList(APIView):
     serializers=EquipmentSerializer(all_equipment,many=True)
     return Response(serializers.data)
 
+  def post(self,request,format=None):
+    serializers=EquipmentSerializer(data=request.data)
+    category_id=request.data.get('category')
+    
+    target_category=Category.objects.get(pk=category_id)
+  
+    if serializers.is_valid():
+      serializers.save(category=target_category)
+
+      return Response(serializers.data,status=status.HTTP_201_CREATED)
+
+
 class AllocationList(APIView):
   def get(self,request, format=None):
     all_allocation=Allocation.objects.all()
     serializers=AllocationSerializer(all_allocation,many=True)
     return Response(serializers.data)
+
+  def post(self,request,format=None):
+    serializers=EquipmentSerializer(data=request.data)
+    equipment_id=request.data.get('allocated_equipment')
+    target_equipment=Equipment.objects.filter(id=equipment_id).first()
+    employee_id=request.data.get('allocated_employee')
+    target_employee=Employee.objects.filter(id=employee_id).first()   
+    
+  
+    if serializers.is_valid():
+      serializers.save(equipment=target_equipment,employee=target_employee)
+
+      return Response(serializers.data,status=status.HTTP_201_CREATED)
+  
 
