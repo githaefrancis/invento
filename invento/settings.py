@@ -87,6 +87,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://127.0.0.1:4200",
     "http://127.0.0.1:8000",
+    "https://githaefrancis.github.io/"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -95,8 +96,9 @@ CSRF_TRUSTED_ORIGINS = [
     "https://herokuapp.com",
     "http://herokuapp.com",
     "http://127.0.0.1",
-    "https://127.0.0.1"
-
+    "https://127.0.0.1",
+    "https://githaefrancis.github.io/",
+    
 ]
 
 # Database
