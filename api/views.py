@@ -1,6 +1,7 @@
 
 from functools import partial
-from django.http import Http404
+from logging import exception
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,7 +9,64 @@ from inventory.models import Department, Employee,Category,Equipment,SupplyConsu
 from .serializer import DepartmentSerializer, EmployeeSerializer,AllocationSerializer,CategorySerializer,EquipmentSerializer,SupplyConsumptionSerializer
 from rest_framework import status
 import json
+from django.contrib.auth.models import User
 # Create your views here.
+import jwt
+
+class Login(APIView):
+  def post(self,request,*args,**kwargs):
+    if not request.data:
+      return Response({'Error',"Please provide username and password"},status="400")
+
+    username=request.data['username']
+    password=request.data['password']
+    try:
+      user=User.objects.get(username=username,password=password)
+
+    except User.DoesNotExist:
+      return Response({'Error':"Invalid username/password"},status="400")
+
+    if user:
+      payload={
+        'id':user.id,
+        'email':user.email
+      }
+      jwt_token={'token':jwt.encode(payload,"SECRET_KEY")}
+      return HttpResponse(
+        json.dumps(jwt_token),
+        status=200,
+        content_type="application/json"
+      )
+
+    else:
+      return Response(
+        json.dumps({'Error':"Invalid credentials"}),
+        status=400,
+        content_type="application/json"
+      )
+
+class Register(APIView):
+  def post(self,request,*args, **kwargs):
+    if not request.data:
+      return Response({'Error':"Please provide the required fields"}, status="400")
+    try:
+      print(request.data)
+      username=request.data['username']
+      email=request.data['email']
+      password=request.data['password']
+      first_name=request.data['first_name']
+      last_name=request.data['last_name']
+
+      new_user=User.objects.create(username=username,email=email,first_name=first_name,last_name=last_name)
+      print(new_user)
+      new_user.set_password(password)
+      new_user.save()
+
+      return HttpResponse("User created",status=201,content_type="application/json")
+
+    except:
+      raise
+      return Response({'Error':"Network error"},status="500")
 
 class DepartmentList(APIView):
   def get(self,request,format=None):
