@@ -10,6 +10,7 @@ from .serializer import DepartmentSerializer, EmployeeSerializer,AllocationSeria
 from rest_framework import status
 import json
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
 # Create your views here.
 import jwt
 
@@ -21,12 +22,14 @@ class Login(APIView):
     username=request.data['username']
     password=request.data['password']
     try:
-      user=User.objects.get(username=username,password=password)
+      user=User.objects.get(username=username)
+      
 
     except User.DoesNotExist:
       return Response({'Error':"Invalid username/password"},status="400")
 
-    if user:
+    if check_password(password,user.password):
+
       payload={
         'id':user.id,
         'email':user.email
@@ -62,11 +65,10 @@ class Register(APIView):
       new_user.set_password(password)
       new_user.save()
 
-      return HttpResponse("User created",status=201,content_type="application/json")
+      return HttpResponse("account created successfully",status=201,content_type="application/json")
 
     except:
-      raise
-      return Response({'Error':"Network error"},status="500")
+      return Response({'Error':"Email or username already exists"},status="400")
 
 class DepartmentList(APIView):
   def get(self,request,format=None):
